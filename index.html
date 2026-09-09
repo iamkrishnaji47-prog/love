@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffd1dc">
+
+    <title>A Special Question For You 💕</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(
+                135deg,
+                #ffd1dc 0%,
+                #e6e6fa 50%,
+                #ffffff 100%
+            );
+
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --card-border: rgba(255, 255, 255, 0.8);
+
+            --primary-pink: #ff6b8b;
+            --secondary-pink: #ff8da1;
+            --lavender: #b19cd9;
+
+            --text-dark: #5c4b51;
+
+            --bubble-user: #ff6b8b;
+            --bubble-bot: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-dark);
+
+            min-height: 100vh;
+            min-height: 100dvh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* =========================
+           FLOATING BACKGROUND
+        ========================= */
+
+        .bg-floating-elements {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .float-item {
+            position: absolute;
+            bottom: -50px;
+
+            animation: floatUp linear forwards;
+
+            opacity: 0.6;
+            user-select: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           MAIN CARD
+        ========================= */
+
+        .card {
+            position: relative;
+            z-index: 10;
+
+            width: 100%;
+            max-width: 420px;
+
+            background: var(--card-bg);
+
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid var(--card-border);
+            border-radius: 30px;
+
+            padding: 30px 25px;
+
+            box-shadow:
+                0 15px 35px rgba(255, 182, 193, 0.3);
+
+            text-align: center;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            animation:
+                cardEntrance
+                1s
+                cubic-bezier(0.175, 0.885, 0.32, 1.275)
+                forwards;
+        }
+
+        @keyframes cardEntrance {
+            0% {
+                transform: scale(0.7) translateY(30px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Move the main card slightly upward */
+        .card {
+            top: -40px;
+        }
+
+        /* =========================
+           RESULT GIFS
+        ========================= */
+        .result-gif {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 14px;
+        }
+
+        .result-gif img {
+            width: 125px;
+            height: 125px;
+            object-fit: contain;
+            border-radius: 18px;
+            display: block;
+        }
+
+        .heartbreak-gif img {
+            width: 120px;
+            height: 120px;
+        }
+
+        @media (max-width: 480px) {
+            .result-gif img {
+                width: 105px;
+                height: 105px;
+            }
+
+            .heartbreak-gif img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* =========================
+           HEADER HEART
+        ========================= */
+
+        .header-heart {
+            font-size: 45px;
+            margin-bottom: 10px;
+
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            15% {
+                transform: scale(1.25);
+            }
+
+            30% {
+                transform: scale(1);
+            }
+
+            45% {
+                transform: scale(1.15);
+            }
+
+            60% {
+                transform: scale(1);
+            }
+        }
+
+        /* =========================
+           CHAT
+        ========================= */
+
+        .chat-container {
+            width: 100%;
+            max-height: 280px;
+
+            overflow-y: auto;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 12px;
+
+            margin-bottom: 15px;
+            padding-right: 5px;
+
+            scroll-behavior: smooth;
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: var(--secondary-pink);
+            border-radius: 10px;
+        }
+
+        .message {
+            max-width: 85%;
+
+            padding: 12px 16px;
+
+            border-radius: 20px;
+
+            font-size: 15px;
+            line-height: 1.4;
+
+            word-wrap: break-word;
+
+            animation:
+                messagePop
+                0.4s
+                cubic-bezier(0.175, 0.885, 0.32, 1.275)
+                forwards;
+        }
+
+        @keyframes messagePop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .message.bot {
+            background: var(--bubble-bot);
+            color: var(--text-dark);
+
+            align-self: flex-start;
+
+            border-bottom-left-radius: 4px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.03);
+
+            text-align: left;
+        }
+
+        .message.user {
+            background: var(--bubble-user);
+            color: white;
+
+            align-self: flex-end;
+
+            border-bottom-right-radius: 4px;
+
+            box-shadow:
+                0 4px 15px rgba(255, 107, 139, 0.3);
+
+            text-align: left;
+        }
+
+        /* =========================
+           TYPING INDICATOR
+        ========================= */
+
+        .typing-indicator {
+            display: flex;
+
+            gap: 5px;
+
+            padding: 12px 16px;
+
+            background: var(--bubble-bot);
+
+            border-radius: 20px;
+            border-bottom-left-radius: 4px;
+
+            align-self: flex-start;
+            align-items: center;
+
+            animation:
+                messagePop
+                0.3s
+                ease
+                forwards;
+        }
+
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+
+            background: var(--lavender);
+
+            border-radius: 50%;
+
+            animation:
+                typingBounce
+                1.4s
+                infinite
+                ease-in-out
+                both;
+        }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        .input-area {
+            width: 100%;
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 5px;
+        }
+
+        .input-box {
+            flex: 1;
+
+            min-width: 0;
+
+            padding: 12px 18px;
+
+            border:
+                2px solid
+                rgba(255, 182, 193, 0.5);
+
+            border-radius: 50px;
+
+            outline: none;
+
+            font-family: 'Quicksand', sans-serif;
+            font-size: 15px;
+
+            background: rgba(255, 255, 255, 0.9);
+
+            color: var(--text-dark);
+
+            transition: all 0.3s ease;
+        }
+
+        .input-box:focus {
+            border-color: var(--primary-pink);
+
+            box-shadow:
+                0 0 10px
+                rgba(255, 107, 139, 0.2);
+        }
+
+        .send-btn {
+            background: var(--primary-pink);
+            color: white;
+
+            border: none;
+
+            border-radius: 50px;
+
+            padding: 0 20px;
+
+            font-family: 'Quicksand', sans-serif;
+
+            font-weight: 600;
+            font-size: 15px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+
+            box-shadow:
+                0 4px 12px
+                rgba(255, 107, 139, 0.4);
+        }
+
+        .send-btn:hover {
+            background: #ff5277;
+            transform: scale(1.05);
+        }
+
+        .send-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* =========================
+           CELEBRATION
+        ========================= */
+
+        .celebration-screen {
+            display: none;
+
+            flex-direction: column;
+            align-items: center;
+
+            text-align: center;
+
+            width: 100%;
+
+            animation:
+                fadeIn
+                0.8s
+                ease
+                forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .big-heart {
+            font-size: 80px;
+
+            animation:
+                heartbeat
+                1s
+                infinite;
+
+            margin-bottom: 15px;
+        }
+
+        .celebration-title {
+            font-family: 'Sacramento', cursive;
+
+            font-size: 42px;
+
+            color: var(--primary-pink);
+
+            margin-bottom: 10px;
+
+            text-shadow:
+                0 2px 10px
+                rgba(255, 107, 139, 0.2);
+        }
+
+        .celebration-text {
+            font-size: 16px;
+
+            line-height: 1.5;
+
+            color: var(--text-dark);
+
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           HEARTBREAK
+        ========================= */
+
+        .heartbreak-screen {
+            display: none;
+
+            flex-direction: column;
+            align-items: center;
+
+            width: 100%;
+
+            animation:
+                fadeIn
+                0.5s
+                ease
+                forwards;
+        }
+
+        .broken-heart {
+            font-size: 70px;
+
+            animation:
+                shake
+                0.5s
+                infinite;
+
+            margin-bottom: 10px;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+
+            20% {
+                transform: translate(-1px, -2px) rotate(-5deg);
+            }
+
+            40% {
+                transform: translate(-3px, 0px) rotate(3deg);
+            }
+
+            60% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+
+            80% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+
+            100% {
+                transform: translate(0px, 0px) rotate(0deg);
+            }
+        }
+
+        .progress-bar-container {
+            width: 100%;
+
+            background:
+                rgba(255, 255, 255, 0.5);
+
+            border-radius: 20px;
+
+            height: 14px;
+
+            margin: 15px 0;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(255, 107, 139, 0.3);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--lavender),
+                    var(--primary-pink)
+                );
+
+            border-radius: 20px;
+
+            transition:
+                width 0.1s linear;
+        }
+
+        .progress-text {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: var(--primary-pink);
+
+            margin-bottom: 10px;
+        }
+
+        .restart-btn {
+            background: var(--lavender);
+            color: white;
+
+            border: none;
+
+            border-radius: 50px;
+
+            padding: 12px 24px;
+
+            font-family: 'Quicksand', sans-serif;
+
+            font-weight: 600;
+            font-size: 15px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+
+            box-shadow:
+                0 4px 15px
+                rgba(177, 156, 217, 0.4);
+
+            margin-top: 10px;
+        }
+
+        .restart-btn:hover {
+            background: #9d85cb;
+            transform: scale(1.05);
+        }
+
+        /* =========================
+           SPARKLES
+        ========================= */
+
+        .sparkle {
+            position: fixed;
+
+            pointer-events: none;
+
+            animation:
+                sparkleAnim
+                1s
+                linear
+                forwards;
+
+            z-index: 20;
+        }
+
+        @keyframes sparkleAnim {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(0.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 480px) {
+            body {
+                padding: 14px;
+                align-items: center;
+            }
+
+            .card {
+                padding: 25px 18px;
+                border-radius: 25px;
+            }
+
+            .chat-container {
+                max-height: 260px;
+            }
+
+            .celebration-title {
+                font-size: 36px;
+            }
+
+            .big-heart {
+                font-size: 70px;
+            }
+
+            .send-btn {
+                padding: 0 16px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            body {
+                align-items: flex-start;
+                padding-top: 15px;
+            }
+
+            .card {
+                margin: 10px 0;
+            }
+
+            .chat-container {
+                max-height: 190px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating Background -->
+    <div
+        class="bg-floating-elements"
+        id="bgElements">
+    </div>
+<!-- Cute Footer -->
+<footer class="cute-footer">
+    Made with 💗, KrishnaJi_dev
+    <span>✨ Always & Forever ✨</span>
+</footer>
+
+<style>
+    .cute-footer {
+        position: fixed;
+        bottom: 12px;
+        left: 0;
+        width: 100%;
+
+        text-align: center;
+
+        font-family: 'Quicksand', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+
+        color: rgba(92, 75, 81, 0.7);
+
+        z-index: 15;
+
+        pointer-events: none;
+
+        animation: footerFade 2s ease forwards;
+    }
+
+    .cute-footer span {
+        display: block;
+        margin-top: 3px;
+
+        color: var(--primary-pink);
+
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    @keyframes footerFade {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .cute-footer {
+            bottom: 7px;
+            font-size: 11px;
+        }
+
+        .cute-footer span {
+            font-size: 10px;
+        }
+    }
+</style>
+
+    <!-- Main Card -->
+    <div
+        class="card"
+        id="mainCard">
+
+        <div
+            class="header-heart"
+            id="headerHeart">
+            💖
+        </div>
+      
+
+
+        <!-- =========================
+             CHAT SECTION
+        ========================= -->
+
+        <div
+            id="chatSection"
+            style="width: 100%;">
+
+            <div
+                class="chat-container"
+                id="chatContainer">
+            </div>
+
+
+            <div
+                class="input-area"
+                id="inputArea">
+
+                <input
+                    type="text"
+                    class="input-box"
+                    id="userInput"
+                    placeholder="Type Yes or No..."
+                    autocomplete="off"
+                    enterkeyhint="send">
+
+                <button
+                    class="send-btn"
+                    id="sendBtn">
+                    Send
+                </button>
+
+            </div>
+        </div>
+
+
+        <!-- =========================
+             CELEBRATION SCREEN
+        ========================= -->
+
+        <div
+            class="celebration-screen"
+            id="celebrationScreen">
+
+            <div class="big-heart">
+                💖
+            </div>
+
+            <!-- Shown only when the user answers YES -->
+            <div class="result-gif love-gif">
+                <img
+                    src="https://media4.giphy.com/media/SYo1DFS8NLhhqzzjMU/giphy.gif"
+                    alt="I Love You 💕"
+                    loading="eager">
+            </div>
+
+            <h1 class="celebration-title">
+                I LOVE YOU TOO ❤️🥰
+            </h1>
+
+            <p
+                class="celebration-text"
+                id="finalLoveMessage">
+
+                You just made my heart the happiest
+                heart in the entire universe! 🌸✨
+
+                <br><br>
+
+                Forever and always yours. 🥂💕
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             HEARTBREAK SCREEN
+        ========================= -->
+
+        <div
+            class="heartbreak-screen"
+            id="heartbreakScreen">
+
+            <div class="broken-heart">
+                💔
+            </div>
+
+            <!-- Shown only when the user answers NO -->
+            <div class="result-gif heartbreak-gif">
+                <img
+                    src="https://media1.tenor.com/m/Cux6iliJDegAAAAd/sad-heartbroken.gif"
+                    alt="Broken Heart 💔"
+                    loading="eager">
+            </div>
+
+
+            <div
+                id="heartbreakChat"
+                style="
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    margin-bottom: 10px;
+                ">
+            </div>
+
+
+            <div
+                class="progress-text"
+                id="progressText">
+
+                Processing heartbreak... 0%
+
+            </div>
+
+
+            <div
+                class="progress-bar-container"
+                id="progressContainer">
+
+                <div
+                    class="progress-bar-fill"
+                    id="progressBarFill">
+                </div>
+
+            </div>
+
+
+            <div
+                id="revealContainer"
+                style="
+                    display: none;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100%;
+                ">
+
+                <p
+                    style="
+                        font-weight: 700;
+                        color: var(--primary-pink);
+                        font-size: 18px;
+                        margin-bottom: 5px;
+                    ">
+
+                    JUST KIDDING 😂❤️
+
+                </p>
+
+
+                <p
+                    style="
+                        font-size: 14px;
+                        margin-bottom: 15px;
+                    ">
+
+                    I can't actually destroy anything!
+                    My heart only beats for you.
+
+                </p>
+
+
+                <button
+                    class="restart-btn"
+                    id="restartBtn">
+
+                    Give Me Another Chance 💗
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =====================================================
+           FLOATING BACKGROUND
+        ===================================================== */
+
+        const bgElements =
+            document.getElementById("bgElements");
+
+        const symbols = [
+            "❤️",
+            "✨",
+            "🌸",
+            "💖",
+            "🌷",
+            "💕",
+            "⭐"
+        ];
+
+        let floatingInterval = null;
+
+
+        function createFloatingElement() {
+
+            const el =
+                document.createElement("div");
+
+            el.className = "float-item";
+
+            el.textContent =
+                symbols[
+                    Math.floor(
+                        Math.random() *
+                        symbols.length
+                    )
+                ];
+
+            el.style.left =
+                Math.random() * 100 + "%";
+
+            el.style.fontSize =
+                Math.random() * 15 + 15 + "px";
+
+            const duration =
+                Math.random() * 5 + 6;
+
+            el.style.animationDuration =
+                duration + "s";
+
+            bgElements.appendChild(el);
+
+
+            setTimeout(() => {
+
+                if (el.parentNode) {
+                    el.remove();
+                }
+
+            }, (duration + 1) * 1000);
+        }
+
+
+        function startFloatingAnimation() {
+
+            if (floatingInterval) {
+                return;
+            }
+
+            floatingInterval =
+                setInterval(
+                    createFloatingElement,
+                    700
+                );
+        }
+
+
+        function stopFloatingAnimation() {
+
+            if (floatingInterval) {
+
+                clearInterval(
+                    floatingInterval
+                );
+
+                floatingInterval = null;
+            }
+        }
+
+
+        startFloatingAnimation();
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const chatContainer =
+            document.getElementById(
+                "chatContainer"
+            );
+
+        const userInput =
+            document.getElementById(
+                "userInput"
+            );
+
+        const sendBtn =
+            document.getElementById(
+                "sendBtn"
+            );
+
+        const inputArea =
+            document.getElementById(
+                "inputArea"
+            );
+
+        const chatSection =
+            document.getElementById(
+                "chatSection"
+            );
+
+        const celebrationScreen =
+            document.getElementById(
+                "celebrationScreen"
+            );
+
+        const heartbreakScreen =
+            document.getElementById(
+                "heartbreakScreen"
+            );
+
+        const headerHeart =
+            document.getElementById(
+                "headerHeart"
+            );
+
+
+        /* =====================================================
+           STATE
+        ===================================================== */
+
+        let currentState = 0;
+
+        let isProcessing = false;
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        function appendMessage(
+            text,
+            sender
+        ) {
+
+            const msg =
+                document.createElement(
+                    "div"
+                );
+
+            msg.classList.add(
+                "message",
+                sender
+            );
+
+            msg.textContent = text;
+
+            chatContainer.appendChild(msg);
+
+            chatContainer.scrollTop =
+                chatContainer.scrollHeight;
+        }
+
+
+        /* =====================================================
+           TYPING INDICATOR
+        ===================================================== */
+
+        function showTypingIndicator(
+            callback,
+            delay = 1000
+        ) {
+
+            const typingDiv =
+                document.createElement(
+                    "div"
+                );
+
+            typingDiv.className =
+                "typing-indicator";
+
+            typingDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+
+            chatContainer.appendChild(
+                typingDiv
+            );
+
+            chatContainer.scrollTop =
+                chatContainer.scrollHeight;
+
+
+            setTimeout(() => {
+
+                if (typingDiv.parentNode) {
+                    typingDiv.remove();
+                }
+
+                callback();
+
+            }, delay);
+        }
+
+
+        /* =====================================================
+           START CONVERSATION
+        ===================================================== */
+
+        function startConversation() {
+
+            showTypingIndicator(() => {
+
+                appendMessage(
+                    "Hey.... Kya haal hai 💕",
+                    "bot"
+                );
+
+
+                showTypingIndicator(() => {
+
+                    appendMessage(
+                        "Do you love me? ❤️",
+                        "bot"
+                    );
+
+                    currentState = 1;
+
+                    userInput.focus();
+
+                });
+
+            });
+
+        }
+
+
+        /* =====================================================
+           YES / NO DETECTOR
+        ===================================================== */
+
+        const yesKeywords = [
+            "yes",
+            "y",
+            "haan",
+            "han",
+            "ha",
+            "yeah",
+            "yep",
+            "yup",
+            "sure",
+            "definitely",
+            "of course",
+            "always",
+            "bilkul",
+            "ji haan"
+        ];
+
+
+        const noKeywords = [
+            "no",
+            "n",
+            "nahi",
+            "nahin",
+            "nah",
+            "nope",
+            "never",
+            "bilkul nahi"
+        ];
+
+
+        function normalizeText(text) {
+
+            return text
+                .toLowerCase()
+                .trim()
+                .replace(/[!?.,;:]+/g, " ")
+                .replace(/\s+/g, " ");
+        }
+
+
+        function containsKeyword(
+            text,
+            keywords
+        ) {
+
+            const normalized =
+                normalizeText(text);
+
+            const words =
+                normalized.split(" ");
+
+
+            return keywords.some(keyword => {
+
+                const key =
+                    normalizeText(keyword);
+
+                // Multi-word phrase
+                if (key.includes(" ")) {
+
+                    return normalized.includes(key);
+
+                }
+
+                // Single word — exact match only
+                return words.includes(key);
+
+            });
+        }
+
+
+        function detectAnswer(text) {
+
+            const isYes =
+                containsKeyword(
+                    text,
+                    yesKeywords
+                );
+
+            const isNo =
+                containsKeyword(
+                    text,
+                    noKeywords
+                );
+
+
+            if (isYes && isNo) {
+                return "conflict";
+            }
+
+            if (isYes) {
+                return "yes";
+            }
+
+            if (isNo) {
+                return "no";
+            }
+
+            return "unknown";
+        }
+
+
+        /* =====================================================
+           HANDLE SUBMIT
+        ===================================================== */
+
+        function handleUserSubmit() {
+
+            if (isProcessing) {
+                return;
+            }
+
+
+            const text =
+                userInput.value.trim();
+
+
+            if (!text) {
+                userInput.focus();
+                return;
+            }
+
+
+            if (currentState !== 1) {
+                return;
+            }
+
+
+            appendMessage(
+                text,
+                "user"
+            );
+
+            userInput.value = "";
+
+
+            const answer =
+                detectAnswer(text);
+
+
+            /* =========================
+               CONFLICT
+            ========================= */
+
+            if (answer === "conflict") {
+
+                appendMessage(
+                    "Ek hi answer do na 😭❤️ Yes ya No?",
+                    "bot"
+                );
+
+                userInput.focus();
+
+                return;
+            }
+
+
+            /* =========================
+               UNKNOWN
+            ========================= */
+
+            if (answer === "unknown") {
+
+                appendMessage(
+                    "Awww... mujhe samajh nahi aaya 🙈💕 Sirf Yes ya No bolo.",
+                    "bot"
+                );
+
+                userInput.focus();
+
+                return;
+            }
+
+
+            isProcessing = true;
+
+            inputArea.style.display =
+                "none";
+
+
+            /* =========================
+               YES
+            ========================= */
+
+            if (answer === "yes") {
+
+                showTypingIndicator(() => {
+
+                    appendMessage(
+                        "Awww.... Yaar Sach mai 🥺💕",
+                        "bot"
+                    );
+
+
+                    showTypingIndicator(() => {
+
+                        appendMessage(
+                            "Sun kar Accha Laga ❤️",
+                            "bot"
+                        );
+
+
+                        setTimeout(() => {
+
+                            triggerCelebration();
+
+                        }, 1200);
+
+                    }, 900);
+
+                }, 1000);
+
+            }
+
+
+            /* =========================
+               NO
+            ========================= */
+
+            else if (answer === "no") {
+
+                // No answer now directly starts
+                // heartbreak sequence.
+                triggerHeartbreakSequence();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CELEBRATION
+        ===================================================== */
+
+        function triggerCelebration() {
+
+            chatSection.style.display =
+                "none";
+
+            headerHeart.style.display =
+                "none";
+
+            celebrationScreen.style.display =
+                "flex";
+
+
+            // Extra celebration effects
+            for (
+                let i = 0;
+                i < 25;
+                i++
+            ) {
+
+                setTimeout(() => {
+
+                    createFloatingElement();
+
+                    createSparkleBurst();
+
+                }, i * 150);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SPARKLE
+        ===================================================== */
+
+        function createSparkleBurst() {
+
+            const sparkle =
+                document.createElement(
+                    "div"
+                );
+
+            sparkle.className =
+                "sparkle";
+
+
+            const sparkleSymbols = [
+                "✨",
+                "💖",
+                "⭐",
+                "🌸"
+            ];
+
+
+            sparkle.textContent =
+                sparkleSymbols[
+                    Math.floor(
+                        Math.random() *
+                        sparkleSymbols.length
+                    )
+                ];
+
+
+            sparkle.style.left =
+                Math.random() * 80 + 10 + "%";
+
+            sparkle.style.top =
+                Math.random() * 80 + 10 + "%";
+
+            sparkle.style.fontSize =
+                Math.random() * 20 + 15 + "px";
+
+
+            document.body.appendChild(
+                sparkle
+            );
+
+
+            setTimeout(() => {
+
+                if (sparkle.parentNode) {
+                    sparkle.remove();
+                }
+
+            }, 1000);
+
+        }
+
+
+        /* =====================================================
+           HEARTBREAK
+        ===================================================== */
+
+        function triggerHeartbreakSequence() {
+
+            chatSection.style.display =
+                "none";
+
+            headerHeart.style.display =
+                "none";
+
+            heartbreakScreen.style.display =
+                "flex";
+
+
+            const heartbreakChat =
+                document.getElementById(
+                    "heartbreakChat"
+                );
+
+            const progressBarFill =
+                document.getElementById(
+                    "progressBarFill"
+                );
+
+            const progressText =
+                document.getElementById(
+                    "progressText"
+                );
+
+            const progressContainer =
+                document.getElementById(
+                    "progressContainer"
+                );
+
+            const revealContainer =
+                document.getElementById(
+                    "revealContainer"
+                );
+
+
+            // Reset everything
+            heartbreakChat.innerHTML =
+                "";
+
+            progressBarFill.style.width =
+                "0%";
+
+            progressText.style.display =
+                "block";
+
+            progressContainer.style.display =
+                "block";
+
+            revealContainer.style.display =
+                "none";
+
+
+            const heartbreakMessages = [
+
+                "Dil Tut Gya Sun kar... 🥺",
+
+                "Mar Jane de mujhe... 😭",
+
+                "Kya Yaar... 💔"
+
+            ];
+
+
+            let msgIdx = 0;
+
+
+            function addNextHBMessage() {
+
+                if (
+                    msgIdx <
+                    heartbreakMessages.length
+                ) {
+
+                    const m =
+                        document.createElement(
+                            "div"
+                        );
+
+                    m.classList.add(
+                        "message",
+                        "bot"
+                    );
+
+                    m.textContent =
+                        heartbreakMessages[
+                            msgIdx
+                        ];
+
+                    heartbreakChat.appendChild(
+                        m
+                    );
+
+
+                    msgIdx++;
+
+
+                    setTimeout(
+                        addNextHBMessage,
+                        800
+                    );
+
+                } else {
+
+                    startFakeProgress();
+
+                }
+
+            }
+
+
+            addNextHBMessage();
+
+
+            function startFakeProgress() {
+
+                let progress = 0;
+
+
+                const interval =
+                    setInterval(() => {
+
+                        progress += 2;
+
+
+                        progressBarFill.style.width =
+                            progress + "%";
+
+
+                        progressText.textContent =
+                            `Processing heartbreak... ${progress}%`;
+
+
+                        if (
+                            progress >= 100
+                        ) {
+
+                            clearInterval(
+                                interval
+                            );
+
+
+                            progressText.style.display =
+                                "none";
+
+                            progressContainer.style.display =
+                                "none";
+
+                            revealContainer.style.display =
+                                "flex";
+
+
+                            isProcessing = false;
+
+                        }
+
+                    }, 40);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RESTART WITHOUT RELOADING PAGE
+        ===================================================== */
+
+        function restartConversation() {
+
+            heartbreakScreen.style.display =
+                "none";
+
+            celebrationScreen.style.display =
+                "none";
+
+            headerHeart.style.display =
+                "block";
+
+            chatSection.style.display =
+                "block";
+
+            inputArea.style.display =
+                "flex";
+
+
+            chatContainer.innerHTML =
+                "";
+
+            document.getElementById(
+                "heartbreakChat"
+            ).innerHTML =
+                "";
+
+
+            document.getElementById(
+                "progressBarFill"
+            ).style.width =
+                "0%";
+
+
+            document.getElementById(
+                "progressText"
+            ).style.display =
+                "block";
+
+
+            document.getElementById(
+                "progressContainer"
+            ).style.display =
+                "block";
+
+
+            document.getElementById(
+                "revealContainer"
+            ).style.display =
+                "none";
+
+
+            currentState = 0;
+
+            isProcessing = false;
+
+
+            startConversation();
+
+        }
+
+
+        /* =====================================================
+           EVENTS
+        ===================================================== */
+
+        sendBtn.addEventListener(
+            "click",
+            handleUserSubmit
+        );
+
+
+        userInput.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    event.preventDefault();
+
+                    handleUserSubmit();
+
+                }
+
+            }
+        );
+
+
+        document
+            .getElementById("restartBtn")
+            .addEventListener(
+                "click",
+                restartConversation
+            );
+
+
+        /* =====================================================
+           START
+        ===================================================== */
+
+        window.addEventListener(
+            "load",
+            startConversation
+        );
+
+    </script>
+
+</body>
+</html>
